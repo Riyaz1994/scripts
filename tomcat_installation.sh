@@ -1,5 +1,6 @@
 #!/bin/bash
-echo "This script is for Installation of tomcat and modifying manager credentials"
+echo "This script is successfully checked on ubuntu 18.04 machine for the Installation of tomcat and modifying tomcat manager credentials"
+echo "Pay attention to the screen for any failures"
 VER="8.5.75"
 tomcat_url="https://archive.apache.org/dist/tomcat/tomcat-8/v${VER}/bin/apache-tomcat-${VER}.tar.gz"
 # If you want to download tomcat 9.0.48 change value of variable VER=9.0.48 and change tomcat-8 to tomcat-9 in the url"
