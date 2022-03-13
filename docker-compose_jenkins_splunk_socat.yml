@@ -1,0 +1,54 @@
+version: '3.8'
+
+volumes:
+  opt-splunk-etc:
+  opt-splunk-var:
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    networks:
+      - katakoda
+    environment:
+      - DOCKER_HOST=tcp://socat:2375
+    privileged: true
+    user: root
+    ports:
+    - 8080:8080
+    - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - socat
+
+  splunk:
+    #build: .
+    container_name: splunk
+    hostname: splunkenterprise
+    image: splunk/splunk:7.0.3
+    networks:
+      - katakoda
+    environment:
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "9997:9997"
+      - "8088:8088"
+      - "1514:1514"
+
+  socat:
+    image: riyaz1994/socat:1
+    networks:
+      - katakoda
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+networks:
+  katakoda:
+    name: katakoda
